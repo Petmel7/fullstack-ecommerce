@@ -1,4 +1,3 @@
-// Cart service
 import prisma from "../config/database";
 
 export const getAllUsers = async () => {
