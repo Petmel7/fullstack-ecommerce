@@ -1,20 +1,21 @@
 // Server start file
 import express from "express";
+import dotenv from "dotenv";
 import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
+import { errorHandler } from "./middleware/error.middleware";
+
+dotenv.config();
 
 const app = express();
 
 app.use(express.json());
 
-// Test endpoint
-app.get("/", (req, res) => {
-    res.json({ message: "API is running 🚀" });
-});
-
 // User routes
-app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
