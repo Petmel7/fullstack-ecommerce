@@ -18,3 +18,13 @@ export interface AuthResponse {
         name?: string | null;
     };
 }
+
+export interface AuthUser {
+    id: number;
+    email: string;
+    name: string | null;
+    role: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+

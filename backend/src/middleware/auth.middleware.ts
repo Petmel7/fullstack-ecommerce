@@ -2,16 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import prisma from "../config/database";
 import { AppError } from "./error.middleware";
+import { AuthUser } from "../types/auth";
 
-// Розширюємо Express Request, щоб у нього був user
 declare module "express-serve-static-core" {
     interface Request {
-        user?: {
-            id: number;
-            email: string;
-            name: string;
-            role: string;
-        };
+        user?: AuthUser;
     }
 }
 
