@@ -41,3 +41,12 @@ export const getMyProducts = async (req: Request, res: Response, next: NextFunct
         next(err);
     }
 };
+
+export const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const products = await productService.getAllProducts();
+        res.json({ success: true, products });
+    } catch (err) {
+        next(err);
+    }
+};

@@ -4,8 +4,8 @@ import { AppError } from "../middleware/error.middleware";
 import { CreateProductInput } from "../types/product";
 
 export const productService = {
-    async createProduct(data: CreateProductInput, sellerId: number) {
-        return await prisma.product.create({
+    createProduct(data: CreateProductInput, sellerId: number) {
+        return prisma.product.create({
             data: { ...data, sellerId },
         });
     },
@@ -16,7 +16,7 @@ export const productService = {
 
         if (product.sellerId !== sellerId) throw new AppError("Not authorized", 403);
 
-        return await prisma.product.update({
+        return prisma.product.update({
             where: { id },
             data,
         });
@@ -28,11 +28,15 @@ export const productService = {
 
         if (product.sellerId !== sellerId) throw new AppError("Not authorized", 403);
 
-        return await prisma.product.delete({ where: { id } });
+        return prisma.product.delete({ where: { id } });
     },
 
-    async getMyProducts(sellerId: number) {
-        return await prisma.product.findMany({ where: { sellerId } });
+    getMyProducts(sellerId: number) {
+        return prisma.product.findMany({ where: { sellerId } });
+    },
+
+    getAllProducts() {
+        return prisma.product.findMany();
     },
 };
 
