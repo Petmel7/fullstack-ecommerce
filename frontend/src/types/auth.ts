@@ -1,3 +1,7 @@
+export interface AuthFormProps {
+    type: "login" | "register";
+}
+
 export interface AuthResponse {
     success: boolean;
     user: {

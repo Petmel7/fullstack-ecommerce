@@ -3,16 +3,24 @@ import { hashPassword } from "../utils/hash";
 import { UpdateProfileRequest, UserProfileResponse } from "../types/user";
 
 export const getUserProfile = async (userId: number): Promise<UserProfileResponse | null> => {
-    return await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
         where: { id: userId },
         select: {
             id: true,
             name: true,
             email: true,
+            role: true,
             createdAt: true,
             updatedAt: true,
         },
     });
+
+    if (!user) return null;
+
+    return {
+        ...user,
+        role: user.role.toLowerCase() as "buyer" | "seller" | "admin",
+    };
 };
 
 export const updateUserProfile = async (
@@ -21,13 +29,8 @@ export const updateUserProfile = async (
 ): Promise<UserProfileResponse> => {
     const updateData: any = {};
 
-    if (data.name) {
-        updateData.name = data.name;
-    }
-
-    if (data.password) {
-        updateData.password = await hashPassword(data.password);
-    }
+    if (data.name) updateData.name = data.name;
+    if (data.password) updateData.password = await hashPassword(data.password);
 
     const updatedUser = await prisma.user.update({
         where: { id: userId },
@@ -36,10 +39,15 @@ export const updateUserProfile = async (
             id: true,
             name: true,
             email: true,
+            role: true,
             createdAt: true,
             updatedAt: true,
         },
     });
 
-    return updatedUser;
+    return {
+        ...updatedUser,
+        role: updatedUser.role.toLowerCase() as "buyer" | "seller" | "admin",
+    };
 };
+

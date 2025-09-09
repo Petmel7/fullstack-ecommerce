@@ -1,12 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { loginUser, registerUser } from "@/lib/api";
-import { AuthResponse } from "@/types/auth";
-
-interface AuthFormProps {
-    type: "login" | "register";
-}
+import { loginUser, registerUser } from "@/services/authService";
+import { AuthFormProps, AuthResponse } from "@/types/auth";
 
 export default function AuthForm({ type }: AuthFormProps) {
     const [email, setEmail] = useState("");

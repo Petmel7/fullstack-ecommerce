@@ -33,7 +33,7 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
             return next(new AppError("User not found", 404));
         }
 
-        req.user = user; // тепер без ts-ignore
+        req.user = user;
         next();
     } catch (error) {
         return next(new AppError("Not authorized, token failed", 401));

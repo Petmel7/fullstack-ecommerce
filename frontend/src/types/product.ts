@@ -1,3 +1,7 @@
+export interface GetAllProductsResponse {
+    success: boolean;
+    products: Product[];
+}
 
 export interface Product {
     id: number;
