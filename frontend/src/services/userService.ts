@@ -2,7 +2,7 @@
 import { API_URL } from "@/lib/api";
 import { GetProfileResponse, User } from "@/types/user";
 
-export async function getUserProfile(token: string): Promise<GetProfileResponse<User>> {
+export const getUserProfile = async (token: string): Promise<GetProfileResponse<User>> => {
     const res = await fetch(`${API_URL}/users/profile`, {
         method: "GET",
         headers: {

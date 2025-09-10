@@ -1,5 +1,7 @@
 import ProductList from "./components/ProductList";
 
-export default function HomePage() {
+const HomePage = () => {
   return <ProductList />
 }
+
+export default HomePage;

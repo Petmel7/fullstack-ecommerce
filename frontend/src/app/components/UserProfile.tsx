@@ -4,31 +4,11 @@
 import { useEffect, useState } from "react";
 import { getUserProfile } from "@/services/userService";
 import { User } from "@/types/user";
+import AuthForm from "./AuthForm";
 
-export default function UserProfile() {
+const UserProfile = () => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
-
-    // useEffect(() => {
-    //     const fetchProfile = async () => {
-    //         const token = localStorage.getItem("token");
-    //         if (!token) {
-    //             setLoading(false);
-    //             return;
-    //         }
-
-    //         try {
-    //             const data = await getUserProfile(token);
-    //             setUser(data);
-    //         } catch (err) {
-    //             console.error("Failed to load user profile:", err);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-
-    //     fetchProfile();
-    // }, []);
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -40,7 +20,7 @@ export default function UserProfile() {
 
             try {
                 const response = await getUserProfile(token);
-                setUser(response.data); // 🔥 тут беремо .data, а не весь response
+                setUser(response.data);
             } catch (err) {
                 console.error("Failed to load user profile:", err);
             } finally {
@@ -52,8 +32,8 @@ export default function UserProfile() {
     }, []);
 
     if (loading) return <p>Loading...</p>;
-    if (!user) return <p>User not found or not logged in</p>;
-    console.log('user.profile', user);
+    if (!user) return <AuthForm type="register" />;
+
     return (
         <div className="max-w-md mx-auto bg-white shadow-lg rounded-2xl p-6 mt-8">
             <h1 className="text-2xl font-bold mb-4">👤 Profile</h1>
@@ -64,3 +44,4 @@ export default function UserProfile() {
     );
 }
 
+export default UserProfile;

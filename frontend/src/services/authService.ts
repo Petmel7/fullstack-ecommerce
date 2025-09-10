@@ -1,6 +1,6 @@
 import { API_URL } from "@/lib/api";
 
-export async function loginUser(email: string, password: string) {
+export const loginUser = async (email: string, password: string) => {
     const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -10,7 +10,7 @@ export async function loginUser(email: string, password: string) {
     return res.json();
 }
 
-export async function registerUser(email: string, password: string, name?: string) {
+export const registerUser = async (email: string, password: string, name?: string) => {
     const res = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

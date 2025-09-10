@@ -4,14 +4,14 @@ import { useState } from "react";
 import { loginUser, registerUser } from "@/services/authService";
 import { AuthFormProps, AuthResponse } from "@/types/auth";
 
-export default function AuthForm({ type }: AuthFormProps) {
+const AuthForm = ({ type }: AuthFormProps) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    async function handleSubmit(e: React.FormEvent) {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError("");
@@ -81,3 +81,5 @@ export default function AuthForm({ type }: AuthFormProps) {
         </form>
     );
 }
+
+export default AuthForm;

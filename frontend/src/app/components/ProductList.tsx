@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { getAllProducts } from "@/services/productService";
 import { Product } from "@/types/product";
 
-export default function ProductList() {
+const ProductList = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -40,3 +40,4 @@ export default function ProductList() {
     );
 }
 
+export default ProductList;
