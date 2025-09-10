@@ -9,7 +9,9 @@ export interface Product {
     description: string;
     price: number;
     quantity: number;
+    photo?: string;
     sellerId: number;
     createdAt: string;
     updatedAt: string;
 }
+

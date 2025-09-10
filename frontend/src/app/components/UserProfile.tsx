@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getUserProfile } from "@/services/userService";
 import { User } from "@/types/user";
 import AuthForm from "./AuthForm";
+import UserProducts from "./UserProducts";
 
 const UserProfile = () => {
     const [user, setUser] = useState<User | null>(null);
@@ -35,12 +36,16 @@ const UserProfile = () => {
     if (!user) return <AuthForm type="register" />;
 
     return (
-        <div className="max-w-md mx-auto bg-white shadow-lg rounded-2xl p-6 mt-8">
-            <h1 className="text-2xl font-bold mb-4">👤 Profile</h1>
-            <p><strong>Name:</strong> {user.name}</p>
-            <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Role:</strong> {user.role}</p>
-        </div>
+        <>
+            <div className="max-w-md mx-auto bg-white shadow-lg rounded-2xl p-6 mt-8">
+                <h1 className="text-2xl font-bold mb-4">👤 Profile</h1>
+                <p><strong>Name:</strong> {user.name}</p>
+                <p><strong>Email:</strong> {user.email}</p>
+                <p><strong>Role:</strong> {user.role}</p>
+            </div>
+
+            <UserProducts />
+        </>
     );
 }
 

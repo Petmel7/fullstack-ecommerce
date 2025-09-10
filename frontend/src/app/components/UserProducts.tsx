@@ -1,0 +1,86 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { productService } from "@/services/productService";
+import { Product } from "@/types/product";
+import CreateProductForm from "./profile/CreateProductForm";
+import EditProductForm from "./profile/EditProductForm";
+
+const UserProducts = () => {
+    const [products, setProducts] = useState<Product[]>([]);
+    const [editing, setEditing] = useState<Product | null>(null);
+
+    useEffect(() => {
+        productService.getMyProducts().then(setProducts).catch(console.error);
+    }, []);
+
+    const handleDelete = async (id: number) => {
+        await productService.deleteProduct(id);
+        setProducts((prev) => prev.filter((p) => p.id !== id));
+    };
+
+    const handleProductCreated = (product: Product) => {
+        setProducts((prev) => [...prev, product]);
+    };
+
+    const handleProductUpdated = (updated: Product) => {
+        setProducts((prev) =>
+            prev.map((p) => (p.id === updated.id ? updated : p))
+        );
+        setEditing(null);
+    };
+
+    console.log("products", products);
+
+    return (
+        <div className="p-6 space-y-6">
+            <h1 className="text-2xl font-bold">My Products</h1>
+
+            <CreateProductForm onProductCreated={handleProductCreated} />
+
+            {products.length === 0 ? (
+                <p>No products yet</p>
+            ) : (
+                <ul className="space-y-3">
+                    {products.map((p) => (
+                        <li
+                            key={p.id}
+                            className="flex flex-col gap-2 p-3 border rounded-lg shadow"
+                        >
+                            {editing?.id === p.id ? (
+                                <EditProductForm
+                                    product={p}
+                                    onProductUpdated={handleProductUpdated}
+                                    onCancel={() => setEditing(null)}
+                                />
+                            ) : (
+                                <>
+                                    <div>
+                                        <p className="font-semibold">{p.name}</p>
+                                        <p className="text-gray-600">${p.price}</p>
+                                    </div>
+                                    <div className="space-x-2">
+                                        <button
+                                            onClick={() => setEditing(p)}
+                                            className="px-3 py-1 bg-blue-600 text-white rounded"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(p.id)}
+                                            className="px-3 py-1 bg-red-600 text-white rounded"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+};
+
+export default UserProducts;

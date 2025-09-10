@@ -36,7 +36,7 @@ export const deleteProduct = async (req: Request, res: Response, next: NextFunct
 export const getMyProducts = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const products = await productService.getMyProducts(req.user!.id);
-        res.json({ success: true, products });
+        res.json(products);
     } catch (err) {
         next(err);
     }
