@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { productService } from "@/services/productService";
 import { Product } from "@/types/product";
-import PhotoUpload from "../PhotoUpload";
+import PhotoUpload from "../product/PhotoUpload";
 
 interface EditProductFormProps {
     product: Product;

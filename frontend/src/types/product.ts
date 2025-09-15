@@ -9,7 +9,7 @@ export interface Product {
     description: string;
     price: number;
     quantity: number;
-    photo?: string;
+    imageUrl?: string;
     sellerId: number;
     createdAt: string;
     updatedAt: string;

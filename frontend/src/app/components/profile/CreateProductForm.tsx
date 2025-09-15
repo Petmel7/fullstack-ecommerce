@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { productService } from "@/services/productService";
 import { Product } from "@/types/product";
-import PhotoUpload from "../PhotoUpload";
+import PhotoUpload from "../product/PhotoUpload";
 
 interface CreateProductFormProps {
     onProductCreated?: (product: Product) => void;
@@ -31,7 +31,7 @@ const CreateProductForm = ({ onProductCreated }: CreateProductFormProps) => {
             formData.append("price", price.toString());
             formData.append("quantity", quantity.toString());
             if (photo) formData.append("photo", photo);
-
+            console.log("formData", formData);
             const product = await productService.createProduct(formData);
 
             if (onProductCreated) onProductCreated(product);

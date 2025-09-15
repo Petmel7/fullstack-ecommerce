@@ -4,13 +4,18 @@ import { AppError } from "../middleware/error.middleware";
 import { CreateProductInput } from "../types/product";
 
 export const productService = {
-    createProduct(data: CreateProductInput, sellerId: number) {
+    async createProduct(data: CreateProductInput, sellerId: number, imageUrl?: string) {
         return prisma.product.create({
-            data: { ...data, sellerId },
+            data: { ...data, sellerId, imageUrl },
         });
     },
 
-    async updateProduct(id: number, data: Partial<CreateProductInput>, sellerId: number) {
+    async updateProduct(
+        id: number,
+        data: Partial<CreateProductInput>,
+        sellerId: number,
+        imageUrl?: string
+    ) {
         const product = await prisma.product.findUnique({ where: { id } });
         if (!product) throw new AppError("Product not found", 404);
 
@@ -18,7 +23,7 @@ export const productService = {
 
         return prisma.product.update({
             where: { id },
-            data,
+            data: { ...data, ...(imageUrl ? { imageUrl } : {}) },
         });
     },
 
@@ -39,4 +44,3 @@ export const productService = {
         return prisma.product.findMany();
     },
 };
-

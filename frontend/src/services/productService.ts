@@ -1,6 +1,7 @@
 
 import { API_URL } from "@/lib/api";
 import { GetAllProductsResponse, Product } from "@/types/product";
+import { getToken } from "@/utils/auth";
 
 export const getAllProducts = async (): Promise<GetAllProductsResponse> => {
     const res = await fetch(`${API_URL}/products`, {
@@ -14,8 +15,6 @@ export const getAllProducts = async (): Promise<GetAllProductsResponse> => {
 
     return res.json();
 };
-
-const getToken = () => localStorage.getItem("token");
 
 export const productService = {
     createProduct: async (formData: FormData): Promise<Product> => {

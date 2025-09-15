@@ -1,9 +1,11 @@
 
 "use client";
 
+// import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getAllProducts } from "@/services/productService";
 import { Product } from "@/types/product";
+import ProductCard from "./ProductCard";
 
 const ProductList = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -32,7 +34,7 @@ const ProductList = () => {
             <ul>
                 {products.map((product) => (
                     <li key={product.id} className="p-2 border-b">
-                        {product.name} – ${product.price}
+                        <ProductCard product={product} />
                     </li>
                 ))}
             </ul>

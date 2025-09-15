@@ -4,7 +4,8 @@
 import { useEffect, useState } from "react";
 import { getUserProfile } from "@/services/userService";
 import { User } from "@/types/user";
-import AuthForm from "./AuthForm";
+import { getToken } from "@/utils/auth";
+import AuthForm from "./auth/AuthForm";
 import UserProducts from "./UserProducts";
 
 const UserProfile = () => {
@@ -13,7 +14,7 @@ const UserProfile = () => {
 
     useEffect(() => {
         const fetchProfile = async () => {
-            const token = localStorage.getItem("token");
+            const token = getToken();
             if (!token) {
                 setLoading(false);
                 return;

@@ -7,11 +7,12 @@ import productRoutes from "./routes/product.routes";
 import ordersRoutes from "./routes/order.routes";
 import { errorHandler } from "./middleware/error.middleware";
 import { corsMiddleware } from "./middleware/cors.middleware";
+import path from "path";
 
 dotenv.config();
 
 const app = express();
-
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use(express.json());
 app.use(corsMiddleware);
 

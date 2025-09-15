@@ -1,10 +1,28 @@
 
 import { Request, Response, NextFunction } from "express";
 import { productService } from "../services/product.service";
+import { AppError } from "../middleware/error.middleware";
 
 export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const product = await productService.createProduct(req.body, req.user!.id);
+        if (!req.user) return next(new AppError("Not authorized", 401));
+
+        const { name, description, price, quantity } = req.body;
+        if (!name || !price) return next(new AppError("Name and price are required", 400));
+
+        const photoUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
+
+        const product = await productService.createProduct(
+            {
+                name,
+                description,
+                price: parseFloat(price),
+                quantity: parseInt(quantity, 10) || 0,
+            },
+            req.user.id,
+            photoUrl
+        );
+
         res.status(201).json({ success: true, product });
     } catch (err) {
         next(err);
@@ -13,12 +31,26 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
 
 export const updateProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const product = await productService.updateProduct(
-            parseInt(req.params.id),
-            req.body,
-            req.user!.id
+        if (!req.user) return next(new AppError("Not authorized", 401));
+
+        const { id } = req.params;
+        const { name, description, price, quantity } = req.body;
+
+        const photoUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
+
+        const updatedProduct = await productService.updateProduct(
+            parseInt(id, 10),
+            {
+                name,
+                description,
+                price: price ? parseFloat(price) : undefined,
+                quantity: quantity ? parseInt(quantity, 10) : undefined,
+            },
+            req.user.id,
+            photoUrl
         );
-        res.json({ success: true, product });
+
+        res.json({ success: true, product: updatedProduct });
     } catch (err) {
         next(err);
     }
