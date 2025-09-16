@@ -1,30 +1,34 @@
+
 import { useState, useCallback } from "react";
 
-type AsyncFn<T> = (...args: any[]) => Promise<T>;
+type AsyncFunction<T, A extends unknown[] = unknown[]> = (...args: A) => Promise<T>;
 
-interface UseAsyncReturn<T> {
-    run: (...args: Parameters<AsyncFn<T>>) => Promise<T | undefined>;
+export interface UseAsyncReturn<T, A extends unknown[] = unknown[]> {
+    run: (...args: A) => Promise<T | undefined>;
     loading: boolean;
     error: string | null;
     data: T | null;
     reset: () => void;
 }
 
-export function useAsync<T>(asyncFn: AsyncFn<T>): UseAsyncReturn<T> {
-    const [loading, setLoading] = useState(false);
+export function useAsync<T, A extends unknown[] = unknown[]>(
+    asyncFn: AsyncFunction<T, A>
+): UseAsyncReturn<T, A> {
+    const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [data, setData] = useState<T | null>(null);
 
     const run = useCallback(
-        async (...args: Parameters<AsyncFn<T>>): Promise<T | undefined> => {
+        async (...args: A): Promise<T | undefined> => {
             setLoading(true);
             setError(null);
             try {
                 const result = await asyncFn(...args);
                 setData(result);
                 return result;
-            } catch (err: any) {
-                setError(err.message || "Something went wrong");
+            } catch (err: unknown) {
+                const message = err instanceof Error ? err.message : String(err ?? "Unknown error");
+                setError(message);
                 return undefined;
             } finally {
                 setLoading(false);
@@ -41,3 +45,4 @@ export function useAsync<T>(asyncFn: AsyncFn<T>): UseAsyncReturn<T> {
 
     return { run, loading, error, data, reset };
 }
+
