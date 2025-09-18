@@ -14,12 +14,12 @@ export interface UseAsyncReturn<T, A extends unknown[] = unknown[]> {
 export function useAsync<T, A extends unknown[] = unknown[]>(
     asyncFn: AsyncFunction<T, A>
 ): UseAsyncReturn<T, A> {
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [data, setData] = useState<T | null>(null);
 
     const run = useCallback(
-        async (...args: A): Promise<T | undefined> => {
+        async (...args: A) => {
             setLoading(true);
             setError(null);
             try {
@@ -27,8 +27,8 @@ export function useAsync<T, A extends unknown[] = unknown[]>(
                 setData(result);
                 return result;
             } catch (err: unknown) {
-                const message = err instanceof Error ? err.message : String(err ?? "Unknown error");
-                setError(message);
+                const msg = err instanceof Error ? err.message : String(err ?? "Unknown error");
+                setError(msg);
                 return undefined;
             } finally {
                 setLoading(false);
@@ -45,4 +45,3 @@ export function useAsync<T, A extends unknown[] = unknown[]>(
 
     return { run, loading, error, data, reset };
 }
-
