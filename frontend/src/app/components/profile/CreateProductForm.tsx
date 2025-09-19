@@ -31,9 +31,9 @@ const CreateProductForm = ({ onProductCreated }: CreateProductFormProps) => {
             formData.append("price", price.toString());
             formData.append("quantity", quantity.toString());
             if (photo) formData.append("photo", photo);
-            console.log("formData", formData);
+            // console.log("formData", formData);
             const product = await productService.createProduct(formData);
-
+            console.log("created product", product);
             if (onProductCreated) onProductCreated(product);
 
             setName("");
@@ -94,7 +94,13 @@ const CreateProductForm = ({ onProductCreated }: CreateProductFormProps) => {
                 required
             />
 
-            <PhotoUpload onChange={setPhoto} />
+            {/* <PhotoUpload onChange={setPhoto} /> */}
+            <PhotoUpload
+                key={photo ? photo.name : "empty"}
+                file={photo}
+                onChange={setPhoto}
+            />
+
 
             <button
                 type="submit"
@@ -111,6 +117,9 @@ export default CreateProductForm;
 
 
 
+
+
+
 // "use client";
 
 // import { useState } from "react";
@@ -121,17 +130,17 @@ export default CreateProductForm;
 // import AsyncState from "../common/AsyncState";
 
 // interface CreateProductFormProps {
-//     onProductCreated?: (product: Product) => void;
+//     onSubmit: (product: Product) => void;
 // }
 
-// const CreateProductForm = ({ onProductCreated }: CreateProductFormProps) => {
+// const CreateProductForm = ({ onSubmit }: CreateProductFormProps) => {
 //     const [name, setName] = useState("");
 //     const [description, setDescription] = useState("");
 //     const [price, setPrice] = useState<number>(0);
 //     const [quantity, setQuantity] = useState<number>(1);
 //     const [photo, setPhoto] = useState<File | null>(null);
 
-//     const { run, loading, error } = useAsync(productService.createProduct);
+//     const { run, loading, error, reset } = useAsync(productService.createProduct);
 
 //     const handleSubmit = async (e: React.FormEvent) => {
 //         e.preventDefault();
@@ -145,9 +154,9 @@ export default CreateProductForm;
 
 //         const product = await run(formData);
 
-//         if (product && onProductCreated) onProductCreated(product);
-
 //         if (product) {
+//             onSubmit(product);
+//             reset();
 //             setName("");
 //             setDescription("");
 //             setPrice(0);
@@ -163,7 +172,6 @@ export default CreateProductForm;
 //         >
 //             <h2 className="text-xl font-bold">Create Product</h2>
 
-//             {/* Async state */}
 //             <AsyncState loading={loading} error={error} />
 
 //             <input

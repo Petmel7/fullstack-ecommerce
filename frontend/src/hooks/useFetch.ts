@@ -4,10 +4,6 @@
 import { useEffect, DependencyList } from "react";
 import { useAsync, UseAsyncReturn } from "./useAsync";
 
-/**
- * Універсальний хук для асинхронних викликів.
- * Виконує asyncFn при маунті та при зміні deps, якщо autoRun = true.
- */
 export function useFetch<T, A extends unknown[] = unknown[]>(
     asyncFn: (...args: A) => Promise<T>,
     options: { autoRun?: boolean; deps?: DependencyList } = {}

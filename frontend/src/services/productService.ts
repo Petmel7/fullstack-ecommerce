@@ -26,7 +26,9 @@ export const productService = {
             body: formData,
         });
         if (!res.ok) throw new Error("Failed to create product");
-        return res.json();
+
+        const data = await res.json();
+        return data.product;
     },
 
     updateProduct: async (id: number, formData: FormData): Promise<Product> => {
@@ -38,7 +40,9 @@ export const productService = {
             body: formData,
         });
         if (!res.ok) throw new Error("Failed to update product");
-        return res.json();
+
+        const data = await res.json();
+        return data.product;
     },
 
     deleteProduct: async (id: number) => {

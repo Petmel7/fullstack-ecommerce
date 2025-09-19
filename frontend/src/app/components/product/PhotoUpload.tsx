@@ -1,42 +1,30 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
 interface PhotoUploadProps {
-    initialPhoto?: string;
+    file: File | null;
     onChange: (file: File | null) => void;
 }
 
-const PhotoUpload = ({ initialPhoto, onChange }: PhotoUploadProps) => {
-    const [photo, setPhoto] = useState<File | null>(null);
-    const [previewSrc, setPreviewSrc] = useState<string>(initialPhoto || "");
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0] || null;
-        setPhoto(file);
-        onChange(file);
-    };
+const PhotoUpload = ({ file, onChange }: PhotoUploadProps) => {
+    const [previewSrc, setPreviewSrc] = useState<string>("");
 
     useEffect(() => {
-        if (photo) {
-            const objectUrl = URL.createObjectURL(photo);
+        if (file) {
+            const objectUrl = URL.createObjectURL(file);
             setPreviewSrc(objectUrl);
-
-            return () => {
-                URL.revokeObjectURL(objectUrl);
-            };
-        } else if (initialPhoto) {
-            setPreviewSrc(initialPhoto);
+            return () => URL.revokeObjectURL(objectUrl);
         } else {
             setPreviewSrc("");
         }
-    }, [photo, initialPhoto]);
+    }, [file]);
 
-    const handleRemovePhoto = () => {
-        setPhoto(null);
-        setPreviewSrc("");
-        onChange(null);
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newFile = e.target.files?.[0] || null;
+        onChange(newFile);
     };
 
     return (
@@ -55,7 +43,7 @@ const PhotoUpload = ({ initialPhoto, onChange }: PhotoUploadProps) => {
                     />
                     <button
                         type="button"
-                        onClick={handleRemovePhoto}
+                        onClick={() => onChange(null)}
                         className="absolute top-1 right-1 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-700"
                     >
                         Remove
@@ -67,5 +55,3 @@ const PhotoUpload = ({ initialPhoto, onChange }: PhotoUploadProps) => {
 };
 
 export default PhotoUpload;
-
-

@@ -94,7 +94,11 @@ const EditProductForm = ({
                 required
             />
 
-            <PhotoUpload onChange={setPhoto} />
+            <PhotoUpload
+                key={photo ? photo.name : "empty"}
+                file={photo}
+                onChange={setPhoto}
+            />
 
             <div className="flex justify-between gap-3">
                 <button
@@ -121,6 +125,7 @@ const EditProductForm = ({
 
 export default EditProductForm;
 
+
 // "use client";
 
 // import { useState } from "react";
@@ -132,28 +137,24 @@ export default EditProductForm;
 
 // interface EditProductFormProps {
 //     product: Product;
-//     onProductUpdated?: (updated: Product) => void;
+//     onSubmit: (updated: Product) => void;
 //     onCancel?: () => void;
 // }
 
-// const EditProductForm = ({
-//     product,
-//     onProductUpdated,
-//     onCancel,
-// }: EditProductFormProps) => {
+// const EditProductForm = ({ product, onSubmit, onCancel }: EditProductFormProps) => {
 //     const [name, setName] = useState(product.name);
 //     const [description, setDescription] = useState(product.description || "");
 //     const [price, setPrice] = useState<number>(product.price);
 //     const [quantity, setQuantity] = useState<number>(product.quantity);
 //     const [photo, setPhoto] = useState<File | null>(null);
 
-//     const { loading, error, run } = useAsync(
+//     const { loading, error, run, reset } = useAsync(
 //         async (formData: FormData): Promise<Product> => {
 //             return productService.updateProduct(product.id, formData);
 //         }
 //     );
 
-//     const handleSubmit = (e: React.FormEvent) => {
+//     const handleSubmit = async (e: React.FormEvent) => {
 //         e.preventDefault();
 
 //         const formData = new FormData();
@@ -163,11 +164,12 @@ export default EditProductForm;
 //         formData.append("quantity", quantity.toString());
 //         if (photo) formData.append("photo", photo);
 
-//         run(formData).then((updated) => {
-//             if (onProductUpdated && updated) {
-//                 onProductUpdated(updated);
-//             }
-//         });
+//         const updated = await run(formData);
+
+//         if (updated) {
+//             onSubmit(updated);
+//             reset();
+//         }
 //     };
 
 //     return (
@@ -241,4 +243,3 @@ export default EditProductForm;
 // };
 
 // export default EditProductForm;
-
