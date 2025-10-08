@@ -1,52 +1,22 @@
 
-# FROM node:20-alpine
-
-# WORKDIR /app
-# COPY package*.json ./
-# RUN npm install
-# COPY . .
-# RUN npm run build
-
-# EXPOSE 3000
-# CMD ["npm", "run", "start"]
-
-
-FROM node:20-bullseye
-
+FROM node:20-alpine AS frontend
 WORKDIR /app
 
-# Копіюємо package.json для кешування залежностей
+# Copy package.json and package-lock.json (for cache)
 COPY package*.json ./
-RUN npm ci --omit=dev
 
-# Копіюємо решту файлів
+# Setting dependencies
+RUN npm install
+
+# Copying the entire project
 COPY . .
 
-# Збираємо білд
+# ⚡️ Building Next.js (creates .next/)
 RUN npm run build
 
-# Відкриваємо порт
+# Opening the port for Next.js
 EXPOSE 3000
 
-# Запускаємо production-сервер
-CMD ["npm", "run", "start"]
-
-
-
-# FROM node:20-alpine AS builder
-
-# WORKDIR /app
-# COPY package*.json ./
-# RUN npm ci
-
-# COPY . .
-# RUN npm run build
-
-# FROM node:20-alpine AS runner
-# WORKDIR /app
-
-# COPY --from=builder /app ./
-
-# EXPOSE 3000
-# CMD ["npm", "run", "start"]
+# Running the build in production mode
+CMD ["npm", "start"]
 

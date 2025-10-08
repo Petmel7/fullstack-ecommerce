@@ -1,35 +1,17 @@
 
-# FROM node:20-alpine
-
-# WORKDIR /app
-
-# COPY package*.json ./
-# RUN npm install
-
-# COPY . .
-
-# RUN npx prisma generate
-
-# EXPOSE 5000
-# CMD ["npm", "run", "dev"]
-
-
-FROM node:20-alpine
-
+FROM node:20-alpine AS backend
 WORKDIR /app
 
-# Копіюємо package.json для кешування залежностей
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm install
 
-# Копіюємо решту файлів
 COPY . .
 
-# Генеруємо Prisma клієнт
+# Generate a Prisma client
 RUN npx prisma generate
 
-# Відкриваємо порт
-EXPOSE 5000
+# Compiling TypeScript code
+RUN npm run build
 
-# Запускаємо production-сервер
-CMD ["npm", "run", "start"]
+CMD ["npm", "start"]
+

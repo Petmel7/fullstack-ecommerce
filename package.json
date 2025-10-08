@@ -1,0 +1,11 @@
+{
+    "scripts": {
+        "docker:up": "docker compose up --build -d",
+        "docker:down": "docker compose down",
+        "docker:restart": "docker compose down && docker compose up --build -d",
+        "docker:logs": "docker compose logs -f",
+        "docker:clean": "docker system prune -af && docker volume prune -f",
+        "docker:shell:backend": "docker compose exec backend sh",
+        "docker:shell:db": "docker compose exec db psql -U ecommerce_user -d fullstack_ecommerce"
+    }
+}
