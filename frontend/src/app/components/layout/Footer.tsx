@@ -23,9 +23,9 @@ const Footer = () => {
                 </div>
             </div>
 
-            <div className="text-center text-gray-400 text-sm mt-4">
+            {/* <div className="text-center text-gray-400 text-sm mt-4">
                 &copy; {new Date().getFullYear()} Fullstack E-Commerce. All rights reserved.
-            </div>
+            </div> */}
         </footer>
     );
 };

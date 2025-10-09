@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import { getUserProfile } from "@/services/userService";
 import { User } from "@/types/user";
-import { getToken } from "@/utils/auth";
+import { getClientToken } from "@/utils/auth";
 import AuthForm from "./auth/AuthForm";
 import UserProducts from "./UserProducts";
 
@@ -14,7 +14,7 @@ const UserProfile = () => {
 
     useEffect(() => {
         const fetchProfile = async () => {
-            const token = getToken();
+            const token = getClientToken();
             if (!token) {
                 setLoading(false);
                 return;

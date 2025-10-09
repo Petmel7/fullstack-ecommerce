@@ -2,7 +2,7 @@
 export interface RegisterRequest {
     email: string;
     password: string;
-    name?: string; // необов’язкове поле
+    name?: string;
 }
 
 export interface LoginRequest {
