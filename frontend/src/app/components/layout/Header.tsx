@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ShoppingCart, Heart, User, Menu, X } from "lucide-react";
+import ProfileIcon from "./ProfileIcon";
 
 const Header = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -36,9 +37,10 @@ const Header = () => {
                     <Link href="/cart">
                         <ShoppingCart className="w-6 h-6 text-gray-600 hover:text-blue-600 transition" />
                     </Link>
-                    <Link href="/profile">
+                    {/* <Link href="/profile">
                         <User className="w-6 h-6 text-gray-600 hover:text-blue-600 transition" />
-                    </Link>
+                    </Link> */}
+                    <ProfileIcon />
                     {/* Mobile menu toggle */}
                     <button
                         className="md:hidden"

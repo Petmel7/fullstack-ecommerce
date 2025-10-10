@@ -2,13 +2,10 @@
 import { API_URL } from "@/lib/api";
 import { GetProfileResponse, User } from "@/types/user";
 
-export const getUserProfile = async (token: string): Promise<GetProfileResponse<User>> => {
+export const getUserProfile = async (): Promise<GetProfileResponse<User>> => {
     const res = await fetch(`${API_URL}/users/profile`, {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
     });
 
     if (!res.ok) {

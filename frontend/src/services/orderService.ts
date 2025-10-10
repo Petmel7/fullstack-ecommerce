@@ -1,16 +1,12 @@
 
 import { Order, CreateOrderDto } from "@/types/order";
-import { getToken } from "@/utils/auth";
 import { API_URL } from "@/lib/api";
 
 export const orderService = {
     createOrder: async (data: CreateOrderDto): Promise<Order> => {
         const res = await fetch(`${API_URL}/orders`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${getToken()}`,
-            },
+            credentials: "include",
             body: JSON.stringify(data),
         });
 
@@ -21,7 +17,7 @@ export const orderService = {
 
     getMyOrders: async (): Promise<Order[]> => {
         const res = await fetch(`${API_URL}/orders`, {
-            headers: { Authorization: `Bearer ${getToken()}` },
+            credentials: "include",
         });
 
         if (!res.ok) throw new Error("Failed to fetch orders");
@@ -30,7 +26,7 @@ export const orderService = {
 
     getOrderById: async (id: number): Promise<Order> => {
         const res = await fetch(`${API_URL}/orders/${id}`, {
-            headers: { Authorization: `Bearer ${getToken()}` },
+            credentials: "include",
         });
 
         if (!res.ok) throw new Error("Failed to fetch order");
@@ -40,10 +36,7 @@ export const orderService = {
     updateOrderStatus: async (id: number, status: string): Promise<Order> => {
         const res = await fetch(`${API_URL}/orders/${id}/status`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${getToken()}`,
-            },
+            credentials: "include",
             body: JSON.stringify({ status }),
         });
 

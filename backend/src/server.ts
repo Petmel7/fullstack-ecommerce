@@ -8,15 +8,23 @@ import productRoutes from "./routes/product.routes";
 import ordersRoutes from "./routes/order.routes";
 import { errorHandler } from "./middleware/error.middleware";
 import { corsMiddleware } from "./middleware/cors.middleware";
+import cors from "cors";
 import path from "path";
 
 dotenv.config();
 
 const app = express();
+
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use(express.json());
 app.use(corsMiddleware);
 app.use(cookieParser());
+app.use(
+    cors({
+        origin: process.env.CLIENT_DEV_URL,
+        credentials: true,
+    })
+);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);

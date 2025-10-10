@@ -1,7 +1,6 @@
 
 import { API_URL } from "@/lib/api";
 import { GetAllProductsResponse, Product } from "@/types/product";
-import { getToken } from "@/utils/auth";
 
 export const getAllProducts = async (): Promise<GetAllProductsResponse> => {
     const res = await fetch(`${API_URL}/products`, {
@@ -20,9 +19,7 @@ export const productService = {
     createProduct: async (formData: FormData): Promise<Product> => {
         const res = await fetch(`${API_URL}/products`, {
             method: "POST",
-            headers: {
-                Authorization: `Bearer ${getToken()}`,
-            },
+            credentials: "include",
             body: formData,
         });
         if (!res.ok) throw new Error("Failed to create product");
@@ -34,9 +31,7 @@ export const productService = {
     updateProduct: async (id: number, formData: FormData): Promise<Product> => {
         const res = await fetch(`${API_URL}/products/${id}`, {
             method: "PUT",
-            headers: {
-                Authorization: `Bearer ${getToken()}`,
-            },
+            credentials: "include",
             body: formData,
         });
         if (!res.ok) throw new Error("Failed to update product");
@@ -48,9 +43,7 @@ export const productService = {
     deleteProduct: async (id: number) => {
         const res = await fetch(`${API_URL}/products/${id}`, {
             method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${getToken()}`,
-            },
+            credentials: "include",
         });
         if (!res.ok) throw new Error("Failed to delete product");
         return res.json();
@@ -58,9 +51,7 @@ export const productService = {
 
     getMyProducts: async (): Promise<Product[]> => {
         const res = await fetch(`${API_URL}/products/my`, {
-            headers: {
-                Authorization: `Bearer ${getToken()}`,
-            },
+            credentials: "include",
         });
         if (!res.ok) throw new Error("Failed to fetch products");
         return res.json();

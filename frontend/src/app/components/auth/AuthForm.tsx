@@ -1,8 +1,8 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { loginUser, registerUser } from "@/services/authService";
-import { AuthFormProps, AuthResponse } from "@/types/auth";
+import { AuthFormProps } from "@/types/auth";
 
 const AuthForm = ({ type }: AuthFormProps) => {
     const [email, setEmail] = useState("");
@@ -11,27 +11,42 @@ const AuthForm = ({ type }: AuthFormProps) => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
+    const router = useRouter();
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError("");
 
         try {
-            let data: AuthResponse;
             if (type === "login") {
-                data = await loginUser(email, password);
+                await loginUser(email, password);
+                alert("✅ Login successful!");
+                router.push("/profile");
             } else {
-                data = await registerUser(email, password, name);
+                await registerUser(email, password, name);
+                alert("✅ Registration successful!");
+                router.push("/login");
             }
-            localStorage.setItem("token", data.token);
-            alert("✅ Success!");
-        } catch (err) {
-            console.log("err", err);
-            setError("❌ Authentication failed");
-        } finally {
-            setLoading(false);
+
+        } catch (err: unknown) {
+            console.error("❌ Error:", err);
+
+            // Якщо це помилка типу Error
+            if (err instanceof Error) {
+                if (err.message.includes("User already exists")) {
+                    setError("❌ Користувач з таким email уже існує");
+                } else if (err.message.includes("Login failed")) {
+                    setError("❌ Невірна пошта або пароль");
+                } else {
+                    setError(`❌ ${err.message}`);
+                }
+            } else {
+                setError("❌ Сталася невідома помилка");
+            }
         }
-    }
+
+    };
 
     return (
         <form

@@ -4,7 +4,6 @@
 import { useEffect, useState } from "react";
 import { getUserProfile } from "@/services/userService";
 import { User } from "@/types/user";
-import { getClientToken } from "@/utils/auth";
 import AuthForm from "./auth/AuthForm";
 import UserProducts from "./UserProducts";
 
@@ -14,14 +13,8 @@ const UserProfile = () => {
 
     useEffect(() => {
         const fetchProfile = async () => {
-            const token = getClientToken();
-            if (!token) {
-                setLoading(false);
-                return;
-            }
-
             try {
-                const response = await getUserProfile(token);
+                const response = await getUserProfile();
                 setUser(response.data);
             } catch (err) {
                 console.error("Failed to load user profile:", err);

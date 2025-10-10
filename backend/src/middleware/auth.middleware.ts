@@ -15,27 +15,29 @@ interface JwtPayload {
 }
 
 export const protect = async (req: Request, res: Response, next: NextFunction) => {
-    let token: string | undefined;
-
-    if (req.headers.authorization?.startsWith("Bearer")) {
-        token = req.headers.authorization.split(" ")[1];
-    }
+    const token = req.cookies?.token;
 
     if (!token) {
         return next(new AppError("Not authorized, no token", 401));
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || "secret") as JwtPayload;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
 
-        const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
+        // Перевіряємо користувача в базі
+        const user = await prisma.user.findUnique({
+            where: { id: decoded.userId },
+            select: { id: true, email: true, name: true, role: true },
+        });
+
         if (!user) {
             return next(new AppError("User not found", 404));
         }
 
         req.user = user;
         next();
-    } catch (error) {
+    } catch (err) {
         return next(new AppError("Not authorized, token failed", 401));
     }
 };
+
