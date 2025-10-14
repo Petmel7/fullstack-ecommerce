@@ -1,30 +1,21 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
-import { getUserProfile } from "@/services/userService";
-import { User } from "@/types/user";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
 import AuthForm from "./auth/AuthForm";
 import UserProducts from "./UserProducts";
 
 const UserProfile = () => {
-    const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
+    const { user, loading } = useAuth();
+    const router = useRouter();
 
     useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const response = await getUserProfile();
-                setUser(response.data);
-            } catch (err) {
-                console.error("Failed to load user profile:", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchProfile();
-    }, []);
+        if (!loading && !user) {
+            router.push("/register");
+        }
+    }, [user, loading, router]);
 
     if (loading) return <p>Loading...</p>;
     if (!user) return <AuthForm type="register" />;

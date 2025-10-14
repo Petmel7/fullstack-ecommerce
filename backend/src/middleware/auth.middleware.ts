@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import prisma from "../config/database";
 import { AppError } from "./error.middleware";
 import { AuthUser } from "../types/auth";
+import { COOKIE_NAME } from "../utils/cookie";
 
 declare module "express-serve-static-core" {
     interface Request {
@@ -15,7 +16,7 @@ interface JwtPayload {
 }
 
 export const protect = async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.cookies?.token;
+    const token = req.cookies?.[COOKIE_NAME];
 
     if (!token) {
         return next(new AppError("Not authorized, no token", 401));

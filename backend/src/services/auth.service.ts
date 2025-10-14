@@ -2,7 +2,7 @@
 import prisma from "../config/database";
 import { AppError } from "../middleware/error.middleware";
 import { hashPassword, comparePassword } from "../utils/hash";
-import { RegisterRequest, LoginRequest, AuthResponse } from "../types/auth";
+import { RegisterRequest, LoginRequest } from "../types/auth";
 import generateToken from "../utils/jwt";
 
 export const registerUser = async (data: RegisterRequest) => {

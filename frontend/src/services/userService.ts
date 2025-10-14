@@ -8,6 +8,8 @@ export const getUserProfile = async (): Promise<GetProfileResponse<User>> => {
         credentials: "include",
     });
 
+    console.log("💬res", res);
+
     if (!res.ok) {
         throw new Error("Failed to fetch user profile");
     }

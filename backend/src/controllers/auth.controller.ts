@@ -10,6 +10,8 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
         const { user, token } = await authService.registerUser({ email, password, name });
 
+        console.log("register👉token", token);
+
         setAuthCookie(res, token);
 
         res.status(201).json({
@@ -27,6 +29,8 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         const { email, password } = req.body as LoginRequest;
 
         const { user, token } = await authService.loginUser({ email, password });
+
+        console.log("login👉token", token);
 
         setAuthCookie(res, token);
 

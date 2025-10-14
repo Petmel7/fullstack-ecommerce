@@ -1,0 +1,30 @@
+# FROM node:20-alpine
+
+# WORKDIR /app
+
+# COPY package*.json ./
+
+# RUN npm install
+
+# # Генеруємо Prisma клієнт
+# RUN npx prisma generate
+
+# EXPOSE 5000
+
+# # Використовуємо nodemon для live reload
+# CMD ["npm", "run", "dev"]
+
+
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+EXPOSE 5000
+
+# Prisma генерується кожного разу при старті контейнера
+CMD ["sh", "-c", "npx prisma generate && npm run dev"]
+
+

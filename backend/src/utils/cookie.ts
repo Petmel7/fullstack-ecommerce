@@ -3,7 +3,10 @@ import { Response } from "express";
 export const COOKIE_NAME = "auth_token";
 const isProd = process.env.NODE_ENV === "production";
 
+console.log("🏭isProd", isProd);
+
 export function setAuthCookie(res: Response, token: string): void {
+    console.log("🪙token", token);
     res.cookie(COOKIE_NAME, token, {
         httpOnly: true,
         secure: isProd,
