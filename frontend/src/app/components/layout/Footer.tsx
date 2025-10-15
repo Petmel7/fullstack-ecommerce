@@ -5,9 +5,9 @@ const Footer = () => {
         <footer className="bg-gray-900 text-white py-6 mt-auto">
             <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
 
-                <div className="mb-4 md:mb-0">
-                    <h1 className="text-xl font-bold">Fullstack E-Commerce</h1>
-                </div>
+                <Link href="/" className="text-2xl font-bold">
+                    🛍️ E-Shop
+                </Link>
 
                 <div className="flex space-x-6 mb-4 md:mb-0">
                     <Link href="/" className="hover:text-gray-400 transition">Home</Link>
@@ -23,9 +23,9 @@ const Footer = () => {
                 </div>
             </div>
 
-            {/* <div className="text-center text-gray-400 text-sm mt-4">
+            <div className="text-center text-gray-400 text-sm mt-4">
                 &copy; {new Date().getFullYear()} Fullstack E-Commerce. All rights reserved.
-            </div> */}
+            </div>
         </footer>
     );
 };

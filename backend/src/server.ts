@@ -15,6 +15,8 @@ dotenv.config();
 
 const app = express();
 
+console.log("server.ts👉process.env.CLIENT_DEV_URL", process.env.CLIENT_DEV_URL);
+
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use(express.json());
 app.use(corsMiddleware);

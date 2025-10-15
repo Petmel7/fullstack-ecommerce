@@ -2,17 +2,19 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ShoppingCart, Heart, User, Menu, X } from "lucide-react";
+import { ShoppingCart, Heart, User, Menu, X, LogOut } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 const Header = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { user, logout } = useAuth();
 
     return (
         <header className="bg-white shadow-md sticky top-0 z-50">
             <div className="container mx-auto flex items-center justify-between px-4 py-3 md:py-4">
                 {/* Logo */}
                 <Link href="/" className="text-2xl font-bold text-blue-600">
-                    FullstackEcom
+                    🛍️ E-Shop
                 </Link>
 
                 {/* Desktop Nav */}
@@ -36,9 +38,27 @@ const Header = () => {
                     <Link href="/cart">
                         <ShoppingCart className="w-6 h-6 text-gray-600 hover:text-blue-600 transition" />
                     </Link>
-                    <Link href="/profile">
+                    {/* <Link href="/profile">
                         <User className="w-6 h-6 text-gray-600 hover:text-blue-600 transition" />
-                    </Link>
+                    </Link> */}
+
+                    {user ? (
+                        <>
+                            <Link href="/profile">
+                                <User className="w-6 h-6 text-gray-700 hover:text-blue-600" />
+                            </Link>
+                            <button onClick={logout}>
+                                <LogOut className="w-6 h-6 text-gray-700 hover:text-red-600" />
+                            </button>
+                        </>
+                    ) : (
+                        <Link
+                            href="/login"
+                            className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+                        >
+                            Log in
+                        </Link>
+                    )}
 
                     {/* Mobile menu toggle */}
                     <button

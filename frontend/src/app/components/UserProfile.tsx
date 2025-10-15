@@ -4,21 +4,28 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import AuthForm from "./auth/AuthForm";
+// import AuthForm from "./auth/AuthForm";
 import UserProducts from "./UserProducts";
 
 const UserProfile = () => {
     const { user, loading } = useAuth();
     const router = useRouter();
+    console.log("UserProfile👉user", user);
+    // useEffect(() => {
+    //     if (!loading && !user) {
+    //         router.push("/register");
+    //     }
+    // }, [user, loading, router]);
 
     useEffect(() => {
-        if (!loading && !user) {
-            router.push("/register");
-        }
+        if (loading) return; // ⛔️ Не перевіряємо поки триває запит
+        if (!user) router.push("/register");
     }, [user, loading, router]);
 
-    if (loading) return <p>Loading...</p>;
-    if (!user) return <AuthForm type="register" />;
+    // if (loading) return <p>Loading...</p>;
+    // if (!user) return <AuthForm type="register" />;
+    if (loading) return <p className="text-center mt-10">Завантаження...</p>;
+    if (!user) return null;
 
     return (
         <>

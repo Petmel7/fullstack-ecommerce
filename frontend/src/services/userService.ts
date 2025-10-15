@@ -16,3 +16,5 @@ export const getUserProfile = async (): Promise<GetProfileResponse<User>> => {
 
     return res.json() as Promise<GetProfileResponse<User>>;
 }
+
+
