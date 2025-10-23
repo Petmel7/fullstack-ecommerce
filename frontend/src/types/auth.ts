@@ -1,5 +1,7 @@
+export type AuthType = "login" | "register";
+
 export interface AuthFormProps {
-    type: "login" | "register";
+    type: AuthType;
 }
 
 export interface AuthResponse {

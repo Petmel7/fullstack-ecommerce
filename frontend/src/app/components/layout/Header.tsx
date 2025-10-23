@@ -38,9 +38,6 @@ const Header = () => {
                     <Link href="/cart">
                         <ShoppingCart className="w-6 h-6 text-gray-600 hover:text-blue-600 transition" />
                     </Link>
-                    {/* <Link href="/profile">
-                        <User className="w-6 h-6 text-gray-600 hover:text-blue-600 transition" />
-                    </Link> */}
 
                     {user ? (
                         <>
@@ -56,7 +53,7 @@ const Header = () => {
                             href="/login"
                             className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
                         >
-                            Log in
+                            Login
                         </Link>
                     )}
 

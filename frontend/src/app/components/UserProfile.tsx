@@ -1,22 +1,13 @@
 
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import UserProducts from "./UserProducts";
 
 const UserProfile = () => {
     const { user, loading } = useAuth();
-    const router = useRouter();
-    // console.log("UserProfile👉user", user);
 
-    useEffect(() => {
-        if (loading) return;
-        if (!user) router.push("/login");
-    }, [user, loading, router]);
-
-    if (loading) return <p className="text-center mt-10">Завантаження...</p>;
+    if (loading) return <p className="text-center mt-10">Loading...</p>;
     if (!user) return null;
 
     return (
