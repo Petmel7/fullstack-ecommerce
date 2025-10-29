@@ -5,6 +5,7 @@
 import Image from "next/image";
 import { Product } from "@/types/product";
 import AddToCartButton from "@/app/components/cart/AddToCartButton";
+import { getImageUrl } from "@/lib/utils";
 
 interface ProductCardProps {
     product: Product;
@@ -15,7 +16,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <div className="p-4 border rounded-lg shadow-sm hover:shadow-md transition flex flex-col">
             {product.imageUrl ? (
                 <Image
-                    src={`http://localhost:5000${product.imageUrl}`}
+                    src={getImageUrl(product.imageUrl)}
                     alt={product.name}
                     width={200}
                     height={200}

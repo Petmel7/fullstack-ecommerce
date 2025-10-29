@@ -42,3 +42,25 @@ export const updateOrderStatus = async (req: Request, res: Response, next: NextF
         next(error);
     }
 };
+
+export const checkoutOrder = async (req: Request, res: Response) => {
+    try {
+        const user = (req as any).user;
+        const { items } = req.body;
+
+        if (!user) {
+            return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
+
+        const order = await orderService.createOrder(user.id, { items });
+
+        res.status(201).json({ success: true, data: order });
+    } catch (err: any) {
+        console.error("❌ Checkout error:", err);
+        res.status(err.statusCode || 500).json({
+            success: false,
+            message: err.message || "Failed to checkout",
+        });
+    }
+};
+

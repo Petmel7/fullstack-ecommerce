@@ -1,13 +1,14 @@
 
-import { Order, CreateOrderDto } from "@/types/order";
+import { Order } from "@/types/order";
 import { API_URL } from "@/lib/api";
+import { Cart } from "@/types/cart";
 
 export const orderService = {
-    createOrder: async (data: CreateOrderDto): Promise<Order> => {
-        const res = await fetch(`${API_URL}/orders`, {
+    createOrder: async (cart: Cart): Promise<Order> => {
+        const res = await fetch(`${API_URL}/orders/checkout`, {
             method: "POST",
             credentials: "include",
-            body: JSON.stringify(data),
+            body: JSON.stringify(cart),
         });
 
         if (!res.ok) throw new Error("Failed to create order");

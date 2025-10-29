@@ -1,6 +1,14 @@
 import prisma from "../config/database";
 import { AppError } from "../middleware/error.middleware";
-import { CreateOrderInput, CreateOrderItemInput, OrderStatus } from "../types/order";
+// import { CreateOrderInput, OrderStatus } from "../types/order";
+import { OrderStatus } from "../types/order";
+
+interface CreateOrderInput {
+    items: {
+        productId: number;
+        quantity: number;
+    }[];
+}
 
 export const orderService = {
     async createOrder(userId: number, data: CreateOrderInput) {
@@ -8,9 +16,21 @@ export const orderService = {
             throw new AppError("Order must have at least one item", 400);
         }
 
+        // отримуємо ціни з бази, щоб уникнути маніпуляцій на фронтенді
+        const products = await prisma.product.findMany({
+            where: { id: { in: data.items.map((i) => i.productId) } },
+            select: { id: true, price: true },
+        });
+
+        const totalAmount = data.items.reduce((sum, item) => {
+            const product = products.find((p) => p.id === item.productId);
+            return sum + (product?.price || 0) * item.quantity;
+        }, 0);
+
         return await prisma.order.create({
             data: {
                 userId,
+                totalAmount,
                 items: {
                     create: data.items.map((item) => ({
                         productId: item.productId,
@@ -19,12 +39,34 @@ export const orderService = {
                 },
             },
             include: {
-                items: {
-                    include: { product: true },
-                },
+                items: { include: { product: true } },
             },
         });
     },
+
+
+    // async createOrder(userId: number, data: CreateOrderInput) {
+    //     if (!data.items || data.items.length === 0) {
+    //         throw new AppError("Order must have at least one item", 400);
+    //     }
+
+    //     return await prisma.order.create({
+    //         data: {
+    //             userId,
+    //             items: {
+    //                 create: data.items.map((item) => ({
+    //                     productId: item.productId,
+    //                     quantity: item.quantity,
+    //                 })),
+    //             },
+    //         },
+    //         include: {
+    //             items: {
+    //                 include: { product: true },
+    //             },
+    //         },
+    //     });
+    // },
 
     async getMyOrders(userId: number) {
         return await prisma.order.findMany({
