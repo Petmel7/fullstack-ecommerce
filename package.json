@@ -12,6 +12,7 @@
         "docker:shell:db": "docker compose exec db psql -U ecommerce_user -d fullstack_ecommerce"
     },
     "devDependencies": {
-        "dotenv-cli": "^10.0.0"
+        "dotenv-cli": "^10.0.0",
+        "typescript": "^5.9.3"
     }
 }

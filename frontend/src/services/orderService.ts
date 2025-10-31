@@ -5,10 +5,22 @@ import { Cart } from "@/types/cart";
 
 export const orderService = {
     createOrder: async (cart: Cart): Promise<Order> => {
+        const payload = {
+            items: cart.items.map((i) => ({
+                productId: i.product.id,
+                quantity: i.quantity,
+            })),
+            totalAmount: cart.items.reduce(
+                (sum, i) => sum + i.product.price * i.quantity,
+                0
+            ),
+        };
+
         const res = await fetch(`${API_URL}/orders/checkout`, {
             method: "POST",
+            headers: { "Content-Type": "application/json" },
             credentials: "include",
-            body: JSON.stringify(cart),
+            body: JSON.stringify(payload),
         });
 
         if (!res.ok) throw new Error("Failed to create order");

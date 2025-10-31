@@ -52,9 +52,18 @@ export const checkoutOrder = async (req: Request, res: Response) => {
             return res.status(401).json({ success: false, message: "Unauthorized" });
         }
 
-        const order = await orderService.createOrder(user.id, { items });
+        // 🧮 Обчислюємо загальну суму
+        const totalAmount = items.reduce(
+            (sum: number, item: any) => sum + item.product.price * item.quantity,
+            0
+        );
 
-        res.status(201).json({ success: true, data: order });
+        const order = await orderService.createOrder(user.id, {
+            items,
+            totalAmount,
+        });
+
+        res.status(201).json(order);
     } catch (err: any) {
         console.error("❌ Checkout error:", err);
         res.status(err.statusCode || 500).json({
@@ -63,4 +72,6 @@ export const checkoutOrder = async (req: Request, res: Response) => {
         });
     }
 };
+
+
 
