@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { protect } from "../middleware/auth.middleware";
+import { validateOrderInput } from "../middleware/validation.middleware";
 import {
-    // createOrder,
-    checkoutOrder,
+    createOrder,
     getMyOrders,
     getOrderById,
     updateOrderStatus,
@@ -10,8 +10,7 @@ import {
 
 const router = Router();
 
-// router.post("/", protect, createOrder);
-router.post("/checkout", protect, checkoutOrder);
+router.post("/checkout", protect, validateOrderInput, createOrder);
 router.get("/", protect, getMyOrders);
 router.get("/:id", protect, getOrderById);
 

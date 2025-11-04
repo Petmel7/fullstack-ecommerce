@@ -1,9 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import { orderService } from "../services/order.service";
+import { AppError } from "../middleware/error.middleware";
 
 export const createOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.user!.id;
+        const userId = req.user?.id;
+
+        if (!userId) {
+            throw new AppError("Unauthorized: missing user ID", 401);
+        }
+
         const order = await orderService.createOrder(userId, req.body);
         res.status(201).json(order);
     } catch (error) {
@@ -42,36 +48,3 @@ export const updateOrderStatus = async (req: Request, res: Response, next: NextF
         next(error);
     }
 };
-
-export const checkoutOrder = async (req: Request, res: Response) => {
-    try {
-        const user = (req as any).user;
-        const { items } = req.body;
-
-        if (!user) {
-            return res.status(401).json({ success: false, message: "Unauthorized" });
-        }
-
-        // 🧮 Обчислюємо загальну суму
-        const totalAmount = items.reduce(
-            (sum: number, item: any) => sum + item.product.price * item.quantity,
-            0
-        );
-
-        const order = await orderService.createOrder(user.id, {
-            items,
-            totalAmount,
-        });
-
-        res.status(201).json(order);
-    } catch (err: any) {
-        console.error("❌ Checkout error:", err);
-        res.status(err.statusCode || 500).json({
-            success: false,
-            message: err.message || "Failed to checkout",
-        });
-    }
-};
-
-
-

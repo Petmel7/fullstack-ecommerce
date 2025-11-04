@@ -1,17 +1,12 @@
-# Базовий lightweight Node образ
+
 FROM node:20-alpine
 
-# Встановлюємо робочу директорію
 WORKDIR /app
 
-# Копіюємо лише package.json для кешу
 COPY package*.json ./
 
-# Встановлюємо залежності
 RUN npm install
 
-# Відкриваємо порт для dev-сервера
 EXPOSE 3000
 
-# Команда за замовчуванням — dev режим Next.js
 CMD ["npm", "run", "dev"]

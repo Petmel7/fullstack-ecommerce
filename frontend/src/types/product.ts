@@ -6,6 +6,7 @@ export interface GetAllProductsResponse {
 export interface Product {
     id: number;
     name: string;
+    slug?: string;
     description: string;
     price: number;
     quantity: number;
@@ -14,4 +15,13 @@ export interface Product {
     createdAt: string;
     updatedAt: string;
 }
+
+// export interface Product {
+//     id: number;
+//     name: string;
+//     slug?: string;
+//     price: number;
+//     imageUrl?: string | null;
+// }
+
 

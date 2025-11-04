@@ -6,6 +6,7 @@ import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
 import productRoutes from "./routes/product.routes";
 import ordersRoutes from "./routes/order.routes";
+import favoriteRoutes from "./routes/favorite.routes";
 import { errorHandler } from "./middleware/error.middleware";
 import { corsMiddleware } from "./middleware/cors.middleware";
 import cors from "cors";
@@ -32,6 +33,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", ordersRoutes);
+app.use("/api/favorites", favoriteRoutes);
 
 app.use(errorHandler);
 

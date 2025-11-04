@@ -7,7 +7,7 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
     try {
         if (!req.user) return next(new AppError("Not authorized", 401));
 
-        const { name, description, price, quantity } = req.body;
+        const { name, slug, description, price, quantity } = req.body;
         if (!name || !price) return next(new AppError("Name and price are required", 400));
 
         const photoUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
@@ -15,6 +15,7 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
         const product = await productService.createProduct(
             {
                 name,
+                slug,
                 description,
                 price: parseFloat(price),
                 quantity: parseInt(quantity, 10) || 0,

@@ -5,11 +5,13 @@ import { useState } from "react";
 import { ShoppingCart, Heart, User, Menu, X, LogOut } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
+import { useFavorites } from "@/context/FavoritesContext";
 
 const Header = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const { user, logout } = useAuth();
     const { cart } = useCart();
+    const { count } = useFavorites();
 
     const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -36,23 +38,18 @@ const Header = () => {
 
                 {/* Icons */}
                 <div className="flex items-center space-x-4">
-                    <Link href="/favorites">
+                    {/* <Link href="/favorites">
                         <Heart className="w-6 h-6 text-gray-600 hover:text-blue-600 transition" />
-                    </Link>
-                    {/* <Link href="/cart">
-                        <ShoppingCart className="w-6 h-6 text-gray-600 hover:text-blue-600 transition" />
                     </Link> */}
 
-                    {/* <div className="relative">
-                        <Link href="/cart">
-                            <ShoppingCart className="w-6 h-6 text-gray-600 hover:text-blue-600 transition" />
-                            {totalItems > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                                    {totalItems}
-                                </span>
-                            )}
-                        </Link>
-                    </div> */}
+                    <Link href="/favorites" className="relative">
+                        <Heart className="w-6 h-6 text-gray-600 hover:text-red-500 transition" />
+                        {count > 0 && (
+                            <span className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                                {count}
+                            </span>
+                        )}
+                    </Link>
 
                     <Link href="/cart" className="relative">
                         <ShoppingCart className="w-6 h-6 text-gray-600 hover:text-blue-600 transition" />

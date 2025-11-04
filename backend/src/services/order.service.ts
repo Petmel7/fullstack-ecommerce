@@ -4,17 +4,40 @@ import { CreateOrderInput, OrderStatus } from "../types/order";
 
 export const orderService = {
     async createOrder(userId: number, data: CreateOrderInput) {
-        console.log("📊data", data);
+        console.log("📦 Creating order for user:", userId);
+        console.log("🧾 Received data:", data);
+
+        // Перевірка на наявність товарів
         if (!data.items || data.items.length === 0) {
             throw new AppError("Order must have at least one item", 400);
         }
 
-        const totalAmount = data.items.reduce((sum: number, item: any) => {
-            const price = item.product?.price ?? 0;
-            return sum + price * item.quantity;
+        // Отримуємо ID продуктів
+        const productIds = data.items.map((item) => item.productId);
+
+        // Підтягуємо актуальні ціни з бази
+        const products = await prisma.product.findMany({
+            where: { id: { in: productIds } },
+            select: { id: true, price: true },
+        });
+
+        if (products.length !== productIds.length) {
+            throw new AppError("One or more products not found", 404);
+        }
+
+        // Рахуємо totalAmount на основі даних з бази
+        const totalAmount = data.items.reduce((sum, item) => {
+            const product = products.find((p) => p.id === item.productId);
+            if (!product) {
+                throw new AppError(`Product with ID ${item.productId} not found`, 404);
+            }
+            return sum + product.price * item.quantity;
         }, 0);
 
-        return await prisma.order.create({
+        console.log("💰 Total amount:", totalAmount);
+
+        // Створюємо замовлення
+        const order = await prisma.order.create({
             data: {
                 userId,
                 totalAmount,
@@ -31,6 +54,10 @@ export const orderService = {
                 },
             },
         });
+
+        console.log("✅ Order created successfully:", order.id);
+
+        return order;
     },
 
     async getMyOrders(userId: number) {

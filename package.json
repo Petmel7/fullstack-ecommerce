@@ -9,7 +9,10 @@
         "docker:logs": "docker compose logs -f",
         "docker:clean": "docker system prune -af && docker volume prune -f",
         "docker:shell:backend": "docker compose exec backend sh",
-        "docker:shell:db": "docker compose exec db psql -U ecommerce_user -d fullstack_ecommerce"
+        "docker:shell:db": "docker compose exec db psql -U ecommerce_user -d fullstack_ecommerce",
+        "docker:prisma:generate": "docker compose exec backend npx prisma generate",
+        "docker:prisma:migrate": "docker compose exec backend npx prisma migrate dev --name init",
+        "docker:prisma:studio": "docker compose exec backend npx prisma studio"
     },
     "devDependencies": {
         "dotenv-cli": "^10.0.0",
