@@ -81,7 +81,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         if (cart.items.length === 0) return alert("Your cart is empty!");
         try {
             // await checkoutOrder(cart);
-            await orderService.createOrder(cart);
+            const res = await orderService.createOrder(cart);
+            console.log("✅👉res", res);
             alert("✅ Order placed successfully!");
             clearCart();
         } catch (err) {

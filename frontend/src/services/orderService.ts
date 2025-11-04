@@ -23,6 +23,8 @@ export const orderService = {
             body: JSON.stringify(payload),
         });
 
+        console.log("🛒createOrder👉res", res);
+
         if (!res.ok) throw new Error("Failed to create order");
 
         return res.json() as Promise<Order>;

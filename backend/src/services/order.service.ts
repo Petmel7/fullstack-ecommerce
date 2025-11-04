@@ -4,14 +4,20 @@ import { CreateOrderInput, OrderStatus } from "../types/order";
 
 export const orderService = {
     async createOrder(userId: number, data: CreateOrderInput) {
+        console.log("📊data", data);
         if (!data.items || data.items.length === 0) {
             throw new AppError("Order must have at least one item", 400);
         }
 
+        const totalAmount = data.items.reduce((sum: number, item: any) => {
+            const price = item.product?.price ?? 0;
+            return sum + price * item.quantity;
+        }, 0);
+
         return await prisma.order.create({
             data: {
                 userId,
-                totalAmount: data.totalAmount,
+                totalAmount,
                 items: {
                     create: data.items.map((item) => ({
                         productId: item.productId,
